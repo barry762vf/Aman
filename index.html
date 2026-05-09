@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Aman | أمان - دليل السلامة العراقي</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aman">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #E11D48;
+            --primary-dark: #BE123C;
+            --secondary: #0F172A;
+            --accent: #3B82F6;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text: #0F172A;
+            --text-muted: #64748B;
+            --success: #10B981;
+            --border: #E2E8F0;
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        body { 
+            margin: 0; padding: 0; background: var(--background); color: var(--text); 
+            padding-top: calc(120px + var(--safe-top)); 
+            padding-bottom: var(--safe-bottom);
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar { display: none; }
+
+        header {
+            position: fixed; top: 0; left: 0; right: 0; padding-top: var(--safe-top);
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+        .header-top { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; }
+        .header-logo { display: flex; align-items: center; gap: 12px; }
+        .header-logo img { width: 45px; height: 45px; border-radius: 10px; }
+        .header-logo h1 { margin: 0; font-size: 26px; font-weight: 900; color: var(--primary); }
+        .header-dev { font-size: 14px; font-weight: 900; color: var(--text-muted); text-align: left; }
+        
+        nav { display: flex; gap: 12px; padding: 5px 15px 15px; overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+        nav::-webkit-scrollbar { display: none; }
+        .nav-btn {
+            background: #EDF2F7; padding: 12px 24px; border-radius: 50px; font-size: 18px; font-weight: 800;
+            color: var(--text-muted); text-decoration: none; white-space: nowrap; transition: 0.3s ease;
+            display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+        }
+        .nav-btn.active { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(225, 29, 72, 0.2); }
+        .nav-btn:hover:not(.active) { background: #E2E8F0; color: var(--text); transform: translateY(-3px); }
+        .nav-btn:active { transform: scale(0.95); }
+
+        .hero { padding: 20px; }
+        .sos-btn {
+            width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; padding: 30px; border-radius: 32px; display: flex; align-items: center;
+            justify-content: center; gap: 25px; text-decoration: none; box-shadow: 0 12px 40px rgba(225, 29, 72, 0.2);
+        }
+        .sos-btn span.num { font-size: 60px; font-weight: 900; }
+        .sos-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 45px rgba(225, 29, 72, 0.3); }
+        .sos-btn:active { transform: scale(0.98); }
+        .sos-btn .label { text-align: right; }
+        .sos-btn .label b { display: block; font-size: 24px; }
+        .sos-btn .label span { font-size: 16px; opacity: 0.8; }
+
+        section { padding: 30px 20px; opacity: 0; transform: translateY(20px); transition: 0.6s; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .section-header i { font-size: 45px; font-style: normal; }
+        .section-header h2 { margin: 0; font-size: 32px; font-weight: 900; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .info-card {
+            background: var(--surface); padding: 30px 20px; border-radius: 28px; border: 1px solid var(--border);
+            text-decoration: none; color: var(--text); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align: center; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .info-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+        .info-card:active { transform: scale(0.95); }
+        .info-card i { font-size: 60px; display: block; margin-bottom: 15px; font-style: normal; }
+        .info-card h3 { margin: 0; font-size: 22px; font-weight: 900; }
+
+        .list-container { background: var(--surface); border-radius: 30px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .list-item { padding: 25px 30px; border-bottom: 1px solid var(--border); display: flex; align-items: center; text-decoration: none; color: var(--text); cursor: pointer; transition: all 0.2s; }
+        .list-item:hover { background: #f8fafc; padding-right: 35px; }
+        .list-item:active { background: #edf2f7; }
+        .list-item i { font-size: 40px; margin-left: 20px; font-style: normal; }
+        .list-item .content { flex: 1; }
+        .list-item b { display: block; font-size: 24px; font-weight: 900; }
+        .list-item span { font-size: 20px; color: var(--primary); font-weight: 900; }
+
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--background); z-index: 2000;
+            display: none; padding-top: var(--safe-top); animation: slideIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .overlay-header { background: var(--surface); padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+        .overlay-close { width: 50px; height: 50px; background: #f1f1f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; cursor: pointer; }
+        .overlay-title { font-size: 22px; font-weight: 900; }
+        
+        .guide-step { background: var(--surface); margin: 15px 20px; padding: 25px; border-radius: 26px; display: flex; gap: 20px; border-right: 8px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .step-num { width: 40px; height: 40px; min-width: 40px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; }
+        .step-text b { display: block; font-size: 20px; margin-bottom: 5px; }
+        .step-text p { font-size: 17px; color: var(--text-muted); margin: 0; font-weight: 700; }
+        
+        .badge-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px; justify-content: center; }
+        .badge { background: #f1f5f9; padding: 10px 20px; border-radius: 15px; font-size: 15px; font-weight: 900; border: 1px solid var(--border); }
+        .badge.dont { background: #fff1f2; color: #e11d48; border-color: #fecdd3; }
+
+        .call-btn { margin: 20px; background: var(--success); color: white; padding: 25px; border-radius: 28px; text-align: center; text-decoration: none; font-weight: 900; font-size: 24px; display: block; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2); }
+
+        .about-card { background: linear-gradient(135deg, var(--secondary), #1E293B); color: white; padding: 50px 30px; border-radius: 45px; margin: 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.15); }
+        .insta-link { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 18px 35px; border-radius: 20px; color: white; text-decoration: none; font-weight: 900; font-size: 20px; margin-top: 25px; transition: all 0.3s; box-shadow: 0 10px 20px rgba(220, 39, 67, 0.2); }
+        .insta-link:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px rgba(220, 39, 67, 0.3); }
+        .insta-link:active { transform: scale(0.95); }
+
+        footer { text-align: center; padding: 50px 20px; color: var(--text-muted); font-size: 16px; font-weight: 800; border-top: 1px solid var(--border); margin-top: 40px; }
+        
+        #splash { 
+            position: fixed; inset: 0; background: #fff; z-index: 3000; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        #splash img { width: 120px; height: 120px; border-radius: 25px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+<div id="splash">
+    <img src="Aman_logo.png" alt="Aman">
+    <h1 style="font-weight: 900; font-size: 36px; margin-top: 20px; color: var(--primary);">Aman | أمان</h1>
+    <p style="font-weight: 700; opacity: 0.6;">بإشراف عبدالله أحمد طارق</p>
+</div>
+
+<header>
+    <div class="header-top">
+        <div class="header-logo">
+            <img src="Aman_logo.png" alt="Logo">
+            <h1>Aman</h1>
+        </div>
+        <div class="header-dev">عبدالله أحمد • aat_962</div>
+    </div>
+    <nav id="main-nav">
+        <a href="#" class="nav-btn active">الرئيسية</a>
+        <a href="#medical" class="nav-btn">الإسعافات</a>
+        <a href="#security" class="nav-btn">الأمن</a>
+        <a href="#numbers" class="nav-btn">الأرقام</a>
+        <a href="#about" class="nav-btn">المطور</a>
+    </nav>
+</header>
+
+<div class="hero">
+    <a href="tel:911" class="sos-btn">
+        <span class="num">911</span>
+        <div class="label">
+            <b>اتصال بالطوارئ</b>
+            <span>الرقم الموحد للعراق</span>
+        </div>
+    </a>
+</div>
+
+<section id="medical">
+    <div class="section-header"><i>🩹</i><h2>الإسعافات الأولية</h2></div>
+    <div class="grid" id="medical-grid"></div>
+</section>
+
+<section id="security">
+    <div class="section-header"><i>🛡️</i><h2>الأمن والخصوصية</h2></div>
+    <div class="list-container" id="security-list"></div>
+</section>
+
+<section id="numbers">
+    <div class="section-header"><i>📞</i><h2>أرقام الطوارئ</h2></div>
+    <div class="list-container" id="numbers-list"></div>
+</section>
+
+<section id="about">
+    <div class="about-card">
+        <div style="font-size: 60px; margin-bottom: 20px;">🇮🇶</div>
+        <h2 style="font-weight: 900; font-size: 28px; margin-bottom: 20px;">المطور: عبدالله أحمد طارق</h2>
+        <p style="font-weight: 700; line-height: 1.8; opacity: 0.9; font-size: 19px;">
+            أنا عبدالله احمد طارق، قمت بتطوير هذا التطبيق لخدمة وطني العراق. تم جمع المعلومات من مصادر طبية وأمنية رسمية لضمان دقتها وسرعة الاستجابة في لحظات الخطر.
+        </p>
+        <p style="font-weight: 700; margin-top: 15px;">اتبعني على انستكرام لرؤية تحديثات مستقبلية على التطبيق أو تطبيقات أخرى:</p>
+        <a href="https://instagram.com/aat_962" target="_blank" class="insta-link">📸 انستكرام: @aat_962</a>
+    </div>
+</section>
+
+<footer>Aman | أمان • عبدالله أحمد طارق • aat_962</footer>
+
+<div id="overlay">
+    <div class="overlay-header">
+        <div class="overlay-close" onclick="closeOverlay()">✕</div>
+        <div class="overlay-title" id="overlay-title">التفاصيل</div>
+        <div style="width: 50px;"></div>
+    </div>
+    <div id="overlay-content" style="overflow-y: auto; height: calc(100% - 70px); padding-bottom: 100px;"></div>
+</div>
+
+<script>
+    const MEDICAL_DATA = [
+        { id: 'bleeding', title: 'النزيف الحاد', icon: '🩸', 
+            symptoms: ['خروج دم بغزارة', 'شحوب وبرودة الجلد', 'سرعة التنفس والنبض'],
+            dontDo: ['لا تنزع الضمادة المشبعة بالدم؛ أضف فوقها فقط.', 'لا تغسل الجروح العميقة بالماء.', 'لا تستخدم العصابة (الطورنيكة) إلا كملاذ أخير.'],
+            steps: [
+                { t: 'الضغط المباشر', d: 'اضغط بقوة باستخدام شاش معقم لمدة 10 دقائق متواصلة دون رفع اليد.' },
+                { t: 'رفع العضو', d: 'ارفع الطرف المصاب أعلى من مستوى القلب لتقليل ضغط الدم في منطقة الجرح.' },
+                { t: 'تأمين المصاب', d: 'اجعل المصاب يستلقي لمنع الإغماء نتيجة فقدان الدم.' }
+            ] 
+        },
+        { id: 'cpr', title: 'توقف القلب (CPR)', icon: '🫀', 
+            symptoms: ['عدم الاستجابة للمؤثرات', 'توقف التنفس تماماً', 'ازرقاق الشفتين'],
+            dontDo: ['لا تبدأ الإنعاش إذا كان المصاب يتنفس.', 'لا تحرك المصاب أثناء التدليك.', 'لا تضغط على عظمة القص بقوة مفرطة للأطفال.'],
+            steps: [
+                { t: 'التحقق الآمن', d: 'تأكد من أمان الموقع ثم افحص الوعي بالضرب على الكتف والنداء بصوت عالٍ.' },
+                { t: '30 ضغطة صدريّة', d: 'للبالغين: استخدم كلتا اليدين. للأطفال: يد واحدة. للرضع: إصبعين فقط.' },
+                { t: 'معدل الضغط', d: 'استمر بمعدل 100-120 ضغطة في الدقيقة بعمق 5 سم للبالغين.' }
+            ] 
+        },
+        { id: 'recovery', title: 'وضعية الإفاقة', icon: '🛌', 
+            symptoms: ['فاقد للوعي ولكنه يتنفس بشكل طبيعي'],
+            dontDo: ['لا تترك المصاب على ظهره (خطر اختناق باللسان).', 'لا تضع مخدة تحت رأسه.'],
+            steps: [
+                { t: 'تعديل الذراع', d: 'ضع الذراع القريبة منك بزاوية قائمة، والذراع الأخرى عبر الصدر.' },
+                { t: 'ثني الركبة', d: 'اثنِ الركبة البعيدة عنك واسحب المصاب برفق ليدور باتجاهك.' },
+                { t: 'فتح المجرى', d: 'أمل الرأس للخلف قليلاً للتأكد من أن مجرى الهواء مفتوح والسوائل تخرج.' }
+            ] 
+        },
+        { id: 'stroke', title: 'السكتة الدماغية', icon: '🧠', 
+            symptoms: ['تدلي جانب من الوجه', 'ثقل في الكلام', 'ضعف مفاجئ في جانب واحد من الجسم'],
+            dontDo: ['لا تعطِ طعاماً أو شراباً.', 'لا تعطِ الأسبرين نهائياً (قد تكون السكتة نزيفية).'],
+            steps: [
+                { t: 'اختبار FAST', d: 'اطلب من المصاب الابتسام، رفع ذراعيه، وتكرار جملة بسيطة.' },
+                { t: 'تسجيل الوقت', d: 'سجل وقت ظهور أول عرض بدقة؛ هذا حيوي جداً للأطباء.' },
+                { t: 'التطمين', d: 'ابقَ مع المصاب وطمئنه حتى وصول الإسعاف؛ اجعله مستلقياً على جنبه.' }
+            ] 
+        },
+        { id: 'asthma', title: 'نوبة الربو الحادة', icon: '🫁', 
+            symptoms: ['صعوبة بالغة في التنفس', 'سعال حاد وصوت صفير', 'توسع منخري الأنف عند الشهيق'],
+            dontDo: ['لا تجعل المصاب يستلقي.', 'لا تزدحم حول المصاب؛ وفر له هواءً نقياً.'],
+            steps: [
+                { t: 'جلسة قائمة', d: 'اجلس المصاب بوضع قائم ليرتاح الحجاب الحاجز.' },
+                { t: 'البخاخ المنقذ', d: 'ساعده على استنشاق 4 بخات (بخاخ فنتولين) بفاصل دقيقة بين كل بخة.' },
+                { t: 'حالة الطوارئ', d: 'إذا لم يتحسن بعد 10 بخات أو تحولت الشفتان للأزرق، اطلب الإسعاف فوراً.' }
+            ] 
+        },
+        { id: 'choking', title: 'الغصة / الاختناق', icon: '🤢', 
+            symptoms: ['عدم القدرة على الكلام أو السعال', 'الإمساك بالرقبة بكلتا اليدين'],
+            dontDo: ['لا تتدخل إذا كان المصاب يسعل بقوة؛ دعه يخرج الجسم بنفسه.', 'لا تضرب الظهر إذا كان المصاب يتنفس.'],
+            steps: [
+                { t: 'ضربات الظهر', d: 'أعطِ 5 ضربات قوية بكعب اليد بين لوحي الكتف مع تمييل المصاب للأمام.' },
+                { t: 'مناورة هيمليك', d: 'للبالغين: اضغط فوق السرة للداخل ولأعلى. للرضع: اضغط على الصدر بإصبعين.' },
+                { t: 'فقدان الوعي', d: 'إذا فقد المصاب الوعي، ابدأ فوراً بعملية الإنعاش القلبي الرئوي (CPR).' }
+            ] 
+        },
+        { id: 'diabetes', title: 'السكري (هبوط وارتفاع)', icon: '🍬', 
+            symptoms: ['الهبوط: تعرق ورعشة وجوع', 'الارتفاع: عطش شديد ورائحة فم تشبه الفاكهة'],
+            dontDo: ['لا تحاول إعطاء سكر لشخص فاقد للوعي.', 'لا تحاول حقن الأنسولين للمصاب بنفسك.'],
+            steps: [
+                { t: 'علاج الهبوط', d: 'إذا كان واعياً، أعطه 15جم سكر سريع (عصير أو ملعقة عسل).' },
+                { t: 'علاج الارتفاع', d: 'شجع المصاب على شرب الماء بكثرة ونقله للمستشفى لفحص السكر.' },
+                { t: 'قاعدة الأمان', d: 'إذا لم تعرف هل هو هبوط أم ارتفاع، تعامل معه كأنه هبوط وأعطه سكراً.' }
+            ] 
+        },
+        { id: 'panic', title: 'نوبات الهلع والتوتر', icon: '😨', 
+            symptoms: ['خفقان قلب سريع', 'تعرق وبرودة', 'شعور بالموت أو فقدان السيطرة'],
+            dontDo: ['لا تقل له "اهدأ" أو "لا تخف"؛ هذا يزيد التوتر.', 'لا تتركه وحده.'],
+            steps: [
+                { t: 'التنفس المربع', d: 'اطلب منه الشهيق لـ 4 ثوانٍ، كتم النفس لـ 4، الزفير لـ 4، ثم الانتظار لـ 4.' },
+                { t: 'تقنية 5-4-3-2-1', d: 'اطلب منه تسمية 5 أشياء يراها، 4 يسمعها، 3 يلمسها، 2 يشمها، 1 يتذوقها.' },
+                { t: 'التطمين', d: 'أخبره أنه في أمان، وأن هذه النوبة ستمر ولن تسبب له نوبة قلبية.' }
+            ] 
+        },
+        { id: 'crush', title: 'إصابات الهرس', icon: '🏗️', 
+            symptoms: ['جزء من الجسم محشور تحت جسم ثقيل', 'تورم شديد وفقدان الإحساس في العضو'],
+            dontDo: ['لا ترفع الجسم الثقيل إذا كان المصاب محشوراً لأكثر من 15 دقيقة (خطر الفشل الكلوي المفاجئ).'],
+            steps: [
+                { t: 'الاتصال الفوري', d: 'اطلب الدفاع المدني (115) والإسعاف (122) فوراً قبل رفع الثقل.' },
+                { t: 'السوائل', d: 'شجع المصاب على شرب الكثير من الماء إذا كان واعياً لغسل السموم من الكلى.' },
+                { t: 'التدقيق', d: 'راقب لون البول بعد الإنقاذ؛ إذا كان مائلاً للبني فهذه حالة طارئة جداً.' }
+            ] 
+        },
+        { id: 'burns', title: 'الحروق الحرارية', icon: '🔥', 
+            symptoms: ['ألم حاد', 'احمرار أو تفحم الجلد', 'فقاعات'],
+            dontDo: ['لا تضع الثلج أو الزبدة أو معجون الأسنان.', 'لا تنزع الملابس الملتصقة بالحرق.'],
+            steps: [
+                { t: 'التبريد الطويل', d: 'ضع الحرق تحت ماء جارٍ بارد (ليس ثلجاً) لمدة لا تقل عن 20 دقيقة.' },
+                { t: 'النزع الحذر', d: 'انزع الخواتم أو الساعات من العضو المصاب قبل أن يتورم.' },
+                { t: 'التغطية', d: 'غطِ الحرق بشاش معقم غير لاصق أو غلاف بلاستيكي نظيف.' }
+            ] 
+        },
+        { id: 'fracture', title: 'الكسور والخلع', icon: '🦴', 
+            symptoms: ['صوت طقطقة عند الإصابة', 'تشوه شكل العضو', 'تورم وألم مبرح'],
+            dontDo: ['لا تحاول إعادة العظم لمكانه.', 'لا تمسح الجرح بقطن في الكسر المفتوح.'],
+            steps: [
+                { t: 'التثبيت', d: 'استخدم أي وسيلة (خشب، كرتون) لتثبيت العظم فوق وتحت منطقة الكسر.' },
+                { t: 'الكسر المفتوح', d: 'غطِ العظم البارز بشاش معقم ولا تلمسه أبداً.' },
+                { t: 'كمادات باردة', d: 'ضع الثلج (داخل قماش) حول الكسر لتقليل التورم.' }
+            ] 
+        },
+        { id: 'poison', title: 'التسمم الكيميائي', icon: '🧪', 
+            symptoms: ['آثار حروق حول الفم', 'رائحة كيميائية للنفس', 'تشنجات'],
+            dontDo: ['لا تجعل المصاب يتقيأ.', 'لا تعطِ الفحم المنشط دون استشارة طبية.'],
+            steps: [
+                { t: 'تحديد المادة', d: 'اعرف ما الذي تم ابتلاعه؛ خذ العبوة معك للمستشفى.' },
+                { t: 'شطف الفم', d: 'اشطف الفم بالماء فقط إذا كان المصاب واعياً.' },
+                { t: 'المستشفى فوراً', d: 'التسمم حالة طارئة تتطلب غسيل معدة تخصصي.' }
+            ] 
+        },
+        { id: 'snake', title: 'لدغات الأفاعي', icon: '🐍', 
+            symptoms: ['ثقبان متقاربان', 'تورم سريع جداً'],
+            dontDo: ['لا تشق الجلد بموس.', 'لا تمص السم.', 'لا تستخدم الثلج.'],
+            steps: [
+                { t: 'الهدوء القاتل', d: 'يجب أن يبقى المصاب ساكناً تماماً لمنع انتشار السم في الدورة الدموية.' },
+                { t: 'تثبيت الطرف', d: 'ثبت العضو المصاب بوضعية منخفضة عن مستوى القلب.' },
+                { t: 'الوصف', d: 'حاول تذكر شكل ولون الأفعى لمساعدة الأطباء في اختيار الترياق.' }
+            ] 
+        },
+        { id: 'head', title: 'إصابات الرأس والجمجمة', icon: '🤕', 
+            symptoms: ['نزيف من الأنف أو الأذن', 'اختلاف في حجم بؤبؤ العين', 'قيء مقذوف'],
+            dontDo: ['لا تترك المصاب ينام قبل مرور 4 ساعات من الإصابة.'],
+            steps: [
+                { t: 'فحص الوعي', d: 'استخدم مقياس (الاسم، المكان، التاريخ) للتأكد من سلامة الإدراك.' },
+                { t: 'تثبيت الرقبة', d: 'تعامل مع أي إصابة رأس قوية كأنها كسر في الرقبة حتى يثبت العكس.' },
+                { t: 'الجروح', d: 'اضغط برفق على جروح فروة الرأس؛ فهي تنزف بغزارة.' }
+            ] 
+        },
+        { id: 'internal', title: 'النزيف الداخلي', icon: '🩸', 
+            symptoms: ['كدمات زرقاء كبيرة', 'برودة أطراف شديدة', 'توهان وعطش'],
+            dontDo: ['لا تعطِ المصاب ماءً للشرب (خطر أثناء التخدير في العمليات).'],
+            steps: [
+                { t: 'وضعية الصدمة', d: 'اجعل المصاب يستلقي ويرفع قدميه 30 سم عن الأرض.' },
+                { t: 'التدفئة', d: 'غطِ المصاب جيداً ببطانية؛ فقدان الدم يبرد الجسم بسرعة.' },
+                { t: 'المراقبة', d: 'راقب النبض في المعصم؛ إذا ضعف جداً فهذه حالة حرجة.' }
+            ] 
+        },
+        { id: 'faint', title: 'الإغماء البسيط', icon: '😵', 
+            symptoms: ['دوار مفاجئ', 'تعرق بارد قبل السقوط'],
+            dontDo: ['لا ترش الماء بغزارة على الوجه (خطر شهيق الماء).', 'لا ترفعه واقفاً فور إفاقته.'],
+            steps: [
+                { t: 'رفع الأقدام', d: 'ارفع قدمي المصاب للأعلى ليعود الدم للدماغ.' },
+                { t: 'تهوية', d: 'فك الملابس الضيقة وامنح المصاب مساحة للتنفس.' },
+                { t: 'إفاقة تدريجية', d: 'بعد الإفاقة، اجعله يجلس لـ 5 دقائق قبل المحاولة بالنهوض.' }
+            ] 
+        },
+        { id: 'electric', title: 'الصعقة الكهربائية', icon: '⚡', 
+            symptoms: ['تفحم في أماكن التلامس', 'تشنج عضلي', 'توقف قلب'],
+            dontDo: ['لا تقترب من المصاب وهو ملامس للتيار.', 'لا تلمس السلك بيدك.'],
+            steps: [
+                { t: 'فصل التيار', d: 'اقطع الكهرباء من المصدر الرئيسي فوراً.' },
+                { t: 'العزل الخشبي', d: 'استخدم عصا خشبية جافة لإبعاد السلك عن المصاب.' },
+                { t: 'الفحص', d: 'ابدأ CPR فوراً إذا كان القلب متوقفاً.' }
+            ] 
+        },
+        { id: 'sprain', title: 'التواء المفاصل (تمزق)', icon: '🦶', 
+            symptoms: ['ألم عند المشي', 'كدمات زرقاء'],
+            dontDo: ['لا تفرك المكان بالمرهم الحار في أول يوم.', 'لا تضع ماءً حاراً.'],
+            steps: [
+                { t: 'بروتوكول RICE', d: 'راحة، ثلج، ضغط بالرباط، رفع العضو.' },
+                { t: 'الثلج', d: 'ضع الثلج لـ 20 دقيقة كل ساعتين لتقليل الالتهاب.' },
+                { t: 'التثبيت', d: 'استخدم الرباط الضاغط بشكل متوسط (ليس ضيقاً جداً).' }
+            ] 
+        },
+        { id: 'eye', title: 'إصابات العين', icon: '👁️', 
+            symptoms: ['احمرار شديد', 'دموع لا تتوقف', 'ألم عند النظر للضوء'],
+            dontDo: ['لا تفرك العين.', 'لا تحاول نزع جسم مغروس في البؤبؤ.'],
+            steps: [
+                { t: 'غسل كيميائي', d: 'إذا كانت مادة، اغسل بماء فاتر لـ 15 دقيقة.' },
+                { t: 'تغطية العينين', d: 'غطِ العين المصابة والسليمة معاً (العينان تتحركان معاً).' },
+                { t: 'جسم غريب', d: 'استخدم زاوية منديل مبلل لإخراج الأتربة فقط.' }
+            ] 
+        },
+        { id: 'baby', title: 'الولادة الطارئة', icon: '👶', 
+            symptoms: ['انقباضات كل دقيقتين', 'رغبة في الدفع'],
+            dontDo: ['لا تمنع خروج الطفل.', 'لا تشد الرأس.'],
+            steps: [
+                { t: 'دعم الرأس', d: 'عند خروج الرأس، ادعمه برفق بيدك دون شد.' },
+                { t: 'تجفيف وتدفئة', d: 'جفف الطفل فوراً وضعه على صدر الأم مباشرة.' },
+                { t: 'الحبل السري', d: 'لا تقص الحبل السري؛ اتركه للمستشفى إلا للضرورة القصوى.' }
+            ] 
+        }
+    ];
+
+    const SECURITY_DATA = {
+        extortion: { title: 'الابتزاز الإلكتروني', icon: '📱', emergencyNumber: '131', steps: [{ t: 'الأمن الوطني', d: 'اتصل فوراً بالرقم 131 لفتح بلاغ سري ومحمي.' }, { t: 'قطع التواصل', d: 'لا تستجيب لتهديدات المبتز، اقطع التواصل فوراً.' }, { t: 'حفظ الأدلة', d: 'احتفظ بلقطات شاشة (Screenshots) للتهديدات.' }] },
+        domestic: { title: 'التعنيف الأسري', icon: '🏠', emergencyNumber: '139', steps: [{ t: 'حماية الأسرة', d: 'اتصل بمديرية حماية الأسرة والطفل على الرقم 139.' }, { t: 'التقرير الطبي', d: 'وثق أي اعتداء جسدي بتقرير طبي رسمي من مستشفى حكومي.' }, { t: 'الخصوصية', d: 'بلاغك سيعامل بخصوصية تامة لضمان سلامتك.' }] },
+        drugs: { title: 'مكافحة المخدرات', icon: '🚫', emergencyNumber: '178', steps: [{ t: 'بلاغ سري', d: 'اتصل بـ 178 للتبليغ عن المروجين أو الأماكن المشبوهة.' }, { t: 'تسليم النفس', d: 'قانون المخدرات يحمي المتعاطي من العقاب إذا سلم نفسه للعلاج.' }] },
+        fire: { title: 'الدفاع المدني والغاز', icon: '🔥', emergencyNumber: '115', steps: [{ t: 'الدفاع المدني', d: 'اتصل بـ 115 فوراً في حالات الحريق أو تسرب الغاز.' }, { t: 'طريقة الخروج', d: 'ازحف على يديك وركبتيك لتجنب استنشاق الدخان.' }, { t: 'قماش مبلل', d: 'ضع قطعة قماش مبللة على فمك وأنفك أثناء الإخلاء.' }] },
+        traffic: { title: 'شرطة المرور', icon: '🚗', emergencyNumber: '455', steps: [{ t: 'عمليات المرور', d: 'اتصل بـ 455 لتوجيه دورية مرور لتخطيط الحادث أو بلاغات الطرق.' }, { t: 'تأمين الموقع', d: 'شغل أضواء التحذير وضع المثلث التحذيري.' }] },
+        theft: { title: 'مكافحة الإجرام', icon: '🚨', emergencyNumber: '144', steps: [{ t: 'مكافحة الإجرام', d: 'اتصل بـ 144 فور وقوع جريمة سرقة أو اعتداء.' }, { t: 'موقع الجريمة', d: 'لا تلمس أي شيء في المكان لتسهيل مهمة خبراء البصمات.' }] },
+        missing: { title: 'بلاغ المفقودين', icon: '🔍', emergencyNumber: '104', steps: [{ t: 'بلاغ نجدة', d: 'اتصل بـ 104 وقدم كافة المواصفات والملابس.' }, { t: 'توفير المعلومات', d: 'زود الشرطة بأحدث صورة واضحة وأماكن التردد.' }] }
+    };
+
+    const EMERGENCY_NUMBERS = [
+        { title: 'النجدة', number: '104', icon: '🚓' },
+        { title: 'الإسعاف', number: '122', icon: '🚑' },
+        { title: 'الإطفاء والغاز', number: '115', icon: '🔥' },
+        { title: 'شرطة المرور', number: '455', icon: '🚦' },
+        { title: 'الأمن الوطني', number: '131', icon: '🛡️' },
+        { title: 'مكافحة المخدرات', number: '178', icon: '🚫' },
+        { title: 'حماية الأسرة', number: '139', icon: '👩‍👧' },
+        { title: 'مكافحة الإجرام', number: '144', icon: '🚔' },
+    ];
+
+    function init() {
+        const medicalGrid = document.getElementById('medical-grid');
+        MEDICAL_DATA.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'info-card';
+            card.onclick = () => showDetail(item);
+            card.innerHTML = `<i>${item.icon}</i><h3>${item.title}</h3>`;
+            medicalGrid.appendChild(card);
+        });
+
+        const securityList = document.getElementById('security-list');
+        Object.keys(SECURITY_DATA).forEach(key => {
+            const item = SECURITY_DATA[key];
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.onclick = () => showDetail(item);
+            div.innerHTML = `<i>${item.icon}</i><div class="content"><b>${item.title}</b></div><span>${item.emergencyNumber}</span>`;
+            securityList.appendChild(div);
+        });
+
+        const numbersList = document.getElementById('numbers-list');
+        EMERGENCY_NUMBERS.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.onclick = () => window.location.href = `tel:${item.number}`;
+            div.innerHTML = `<i>${item.icon}</i><div class="content"><b>${item.title}</b></div><span>${item.number}</span>`;
+            numbersList.appendChild(div);
+        });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.remove(), 800);
+        }, 1500);
+
+        // Navigation Active Logic
+        const navBtns = document.querySelectorAll('.nav-btn');
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // ScrollSpy Logic
+        const sections = document.querySelectorAll('section, .hero');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id') || 'hero';
+                }
+            });
+
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+                const href = btn.getAttribute('href').substring(1);
+                if (href === current || (current === 'hero' && btn.getAttribute('href') === '#')) {
+                    btn.classList.add('active');
+                    // Scroll nav into view if hidden
+                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            });
+        });
+    }
+
+    function showDetail(item) {
+        document.getElementById('overlay-title').innerText = item.title;
+        let html = `
+            <div style="padding:40px 20px; text-align:center;">
+                <div style="font-size:100px;">${item.icon}</div>
+                <h2 style="font-weight:900; margin:15px 0; font-size:32px;">${item.title}</h2>
+            </div>
+            
+            ${item.symptoms ? `
+                <div style="margin-bottom:20px;">
+                    <h3 style="margin:0 20px 10px; color:var(--primary); font-size:22px;">⚠️ الأعراض</h3>
+                    <div class="badge-grid">${item.symptoms.map(s => `<span class="badge">${s}</span>`).join('')}</div>
+                </div>
+            ` : ''}
+
+            ${item.dontDo ? `
+                <div style="margin-bottom:20px;">
+                    <h3 style="margin:0 20px 10px; color:#e11d48; font-size:22px;">❌ تحذيرات</h3>
+                    <div class="badge-grid">${item.dontDo.map(d => `<span class="badge dont">${d}</span>`).join('')}</div>
+                </div>
+            ` : ''}
+
+            <div style="margin-bottom:20px;">
+                <h3 style="margin:0 20px 10px; color:var(--accent); font-size:22px;">✅ الخطوات</h3>
+                ${item.steps.map((s, i) => `
+                    <div class="guide-step">
+                        <div class="step-num">${i+1}</div>
+                        <div class="step-text">
+                            <b>${s.t}</b>
+                            <p>${s.d}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <a href="tel:${item.emergencyNumber || '122'}" class="call-btn">اتصال فوري ( ${item.emergencyNumber || '122'} )</a>
+        `;
+        document.getElementById('overlay-content').innerHTML = html;
+        document.getElementById('overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeOverlay() {
+        document.getElementById('overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
